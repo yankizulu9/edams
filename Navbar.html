@@ -1,0 +1,39 @@
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #fff; border-bottom: 1px solid #ddd; position: relative; z-index: 10000;">
+    <div style="font-weight: bold; font-size: 1.2rem; color: #e74c3c;">EDAMS</div>
+
+    <div style="display: flex; align-items: center; gap: 15px;">
+        <button style="background: #ffb100; color: white; border: none; padding: 8px 18px; border-radius: 25px; font-weight: bold; cursor: pointer;">
+            DONATE ♡
+        </button>
+
+        <div class="hamburger" style="cursor: pointer; display: flex; flex-direction: column; gap: 4px; padding: 5px;">
+            <div style="width: 25px; height: 3px; background: #333;"></div>
+            <div style="width: 25px; height: 3px; background: #333;"></div>
+            <div style="width: 25px; height: 3px; background: #333;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="nav" style="display: none; flex-direction: column; background: #fff; width: 200px; position: absolute; right: 10px; top: 60px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 10001; border-radius: 8px; border: 1px solid #eee;">
+    <a href="index.html" style="padding: 12px 20px; text-decoration: none; color: #333; border-bottom: 1px solid #eee; font-size: 0.9rem;">Home</a>
+    <a href="dashboard.html" style="padding: 12px 20px; text-decoration: none; color: #333; border-bottom: 1px solid #eee; font-size: 0.9rem;">Statistics</a>
+    <a href="request.html" style="padding: 12px 20px; text-decoration: none; color: #333; font-size: 0.9rem;">Request Aid</a>
+</div>
+
+<style>
+    /* Default state */
+    .nav {
+        display: none;
+    }
+
+    /* Shown state */
+    .nav.show {
+        display: flex !important;
+    }
+
+    /* Hover effect for links */
+    .nav a:hover {
+        background-color: #f9f9f9;
+        color: #e74c3c !important;
+    }
+</style>

@@ -328,14 +328,18 @@ into measurable impact for communities affected by crisis.
 fetch("Navbar.html")
   .then(res => res.text())
   .then(data => {
+    // This part puts the Navbar code onto your page
     document.getElementById("navbar").innerHTML = data;
 
-    const hamburger = document.querySelector('#navbar .hamburger');
-    const nav = document.querySelector('#navbar .nav');
-    const actions = document.querySelector('#navbar .nav-actions');
+    // NOW we look for the buttons inside that loaded data
+    const hamburger = document.querySelector('.hamburger');
+    const nav = document.querySelector('.nav');
+    const actions = document.querySelector('.nav-actions');
 
+    // This makes the click work
     if (hamburger && nav && actions) {
       hamburger.addEventListener('click', () => {
+        console.log("Menu clicked!"); // Check your browser console to see this!
         hamburger.classList.toggle('active');
         nav.classList.toggle('show');
         actions.classList.toggle('show');
@@ -361,6 +365,24 @@ fetch("Navbar.html")
         </div>
     </div>
 </div>
+<script>
+fetch("Navbar.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("navbar").innerHTML = data;
+
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav');
+
+    if (hamburger && navMenu) {
+      hamburger.addEventListener('click', () => {
+        console.log("Button hit!"); // Watch for this in your F12 console!
+        navMenu.classList.toggle('show');
+      });
+    }
+  })
+  .catch(err => console.error("Error loading navbar:", err));
+</script>
 
 </body>
 </html>
