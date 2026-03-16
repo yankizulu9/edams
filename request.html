@@ -5,12 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EDAMS - Request Aid</title>
     <style>
-        /* Modern, clean font and background */
+        /* 1. CORE STYLING */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f4f7f6; color: #333; }
-        
-        /* Space for the fetched navbar so content isn't hidden behind it */
         #navbar { min-height: 70px; } 
-
         .container { max-width: 600px; margin: 40px auto; padding: 20px; }
         
         .form-card {
@@ -18,31 +15,56 @@
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
         }
 
         h2 { color: #e74c3c; margin-top: 0; border-left: 5px solid #e74c3c; padding-left: 15px; }
         p { color: #666; font-size: 0.9rem; margin-bottom: 25px; }
 
+        /* 2. INPUTS & VALIDATION STATES */
         .input-group { margin-bottom: 20px; }
         label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 0.9rem; color: #555; }
         
         input, select, textarea {
             width: 100%;
             padding: 12px;
-            border: 1.5px solid #eee;
+            border: 2px solid #eee;
             border-radius: 8px;
-            box-sizing: border-box; /* Prevents input from stretching past the card */
+            box-sizing: border-box;
             font-size: 1rem;
             outline: none;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
         }
 
+        /* Focus state (Blue glow) */
         input:focus, select:focus, textarea:focus {
-            border-color: #e74c3c;
+            border-color: #3498db;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
+        }
+
+        /* Valid state (Green border when correctly filled) */
+        input:valid, select:valid, textarea:valid {
+            border-color: #2ecc71 !important;
+        }
+
+        /* 3. THE SHAKE EFFECT (ANIMATION) */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+
+        .error-shake {
+            animation: shake 0.3s ease-in-out;
+            border-color: #e74c3c !important;
+            background-color: #fff6f6;
         }
 
         textarea { height: 120px; resize: vertical; }
 
+        /* 4. BUTTON STYLING */
         .submit-btn {
             background: #e74c3c;
             color: white;
@@ -57,11 +79,8 @@
             box-shadow: 0 4px 10px rgba(231, 76, 60, 0.2);
         }
 
-        .submit-btn:hover { 
-            background: #c0392b; 
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(231, 76, 60, 0.3);
-        }
+        .submit-btn:hover { background: #c0392b; transform: translateY(-2px); }
+        .submit-btn:disabled { background: #95a5a6; cursor: not-allowed; }
     </style>
 </head>
 <body>
@@ -69,11 +88,11 @@
     <div id="navbar"></div>
 
     <div class="container">
-        <div class="form-card">
+        <div class="form-card" id="mainCard">
             <h2>Request Urgent Aid</h2>
-            <p>Please provide your details below. We prioritize cases based on medical urgency and food security.</p>
+            <p>Please ensure all details are accurate. Empty fields will trigger a warning.</p>
             
-            <form id="aidForm">
+            <form id="aidForm" novalidate>
                 <div class="input-group">
                     <label>Your Full Name</label>
                     <input type="text" placeholder="e.g. Abdullah Ahmed" required>
@@ -82,7 +101,7 @@
                 <div class="input-group">
                     <label>Current Location (Gaza District)</label>
                     <select required>
-                        <option value="">-- Select Your District --</option>
+                        <option value="">-- Select Location --</option>
                         <option value="north">North Gaza</option>
                         <option value="gaza-city">Gaza City</option>
                         <option value="deir-al-balah">Deir al-Balah</option>
@@ -92,65 +111,87 @@
                 </div>
 
                 <div class="input-group">
-                    <label>Type of Assistance Required</label>
+                    <label>Type of Aid Needed</label>
                     <select required>
+                        <option value="">-- Select Aid Category --</option>
                         <option value="medical">Medical Assistance</option>
-                        <option value="food">Emergency Food & Water</option>
+                        <option value="food">Emergency Food/Water</option>
                         <option value="shelter">Shelter Support</option>
-                        <option value="protection">Protection Services</option>
                     </select>
                 </div>
 
                 <div class="input-group">
                     <label>Briefly describe your situation</label>
-                    <textarea placeholder="Please tell us about the urgency..."></textarea>
+                    <textarea placeholder="Tell us about the urgency..." required></textarea>
                 </div>
 
-                <button type="submit" class="submit-btn">SUBMIT URGENT REQUEST</button>
+                <button type="submit" class="submit-btn" id="submitBtn">SUBMIT URGENT REQUEST</button>
             </form>
         </div>
     </div>
 
     <script>
+        // --- 1. FETCH & LOAD NAVBAR ---
         fetch("Navbar.html")
           .then(res => res.text())
           .then(data => {
             document.getElementById("navbar").innerHTML = data;
             
-            // This ensures the hamburger menu works on this page too!
+            // Re-bind hamburger menu logic for mobile
             setTimeout(() => {
                 const hamburger = document.querySelector('.hamburger');
                 const navMenu = document.querySelector('.nav');
                 if (hamburger && navMenu) {
-                    hamburger.onclick = () => {
-                        navMenu.classList.toggle('show');
-                        hamburger.classList.toggle('active'); // Animates the lines to X
-                    };
+                    hamburger.onclick = () => navMenu.classList.toggle('show');
                 }
             }, 100);
           });
 
-        // Small simulation of form submission
-        document.getElementById('aidForm').onsubmit = (e) => {
-            e.preventDefault();
-            alert("Thank you. Your request has been logged in the EDAMS system. We will contact you soon.");
+        // --- 2. SHAKE & SUBMISSION LOGIC ---
+        document.getElementById('aidForm').onsubmit = function(e) {
+            e.preventDefault(); // Stop page from refreshing
+            
+            const form = e.target;
+            const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+            let isFormValid = true;
+
+            // Loop through inputs to check for empty values
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    isFormValid = false;
+                    // Add the CSS shake class
+                    input.classList.add('error-shake');
+                    // Remove it after animation so it can shake again on next click
+                    setTimeout(() => input.classList.remove('error-shake'), 500);
+                }
+            });
+
+            // If any field is empty, stop the submission
+            if (!isFormValid) return; 
+
+            // --- 3. SUCCESS STATE (THE SUBMISSION) ---
+            const btn = document.getElementById('submitBtn');
+            const card = document.getElementById('mainCard');
+            
+            // Change button to loading state
+            btn.innerHTML = "PROCESSING REQUEST... ⏳";
+            btn.disabled = true;
+
+            // Simulate server delay (2 seconds)
+            setTimeout(() => {
+                // Replace the form inside the card with a professional success message
+                card.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="font-size: 60px; margin-bottom: 15px;">✅</div>
+                        <h2 style="color: #2ecc71; border: none; padding: 0; margin-bottom: 10px;">Request Submitted</h2>
+                        <p style="font-size: 1.1rem;">Your Emergency ID: <strong>EDAMS-${Math.floor(Math.random() * 9000) + 1000}</strong></p>
+                        <p>We have logged your request in the EDAMS emergency queue. Stay safe.</p>
+                        <hr style="border: 0; border-top: 1px solid #eee; margin: 25px 0;">
+                        <button onclick="window.location.href='index.html'" class="submit-btn" style="width: auto; padding: 12px 40px;">RETURN TO DASHBOARD</button>
+                    </div>
+                `;
+            }, 2000);
         };
     </script>
-    <script>
-    fetch("Navbar.html")
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById("navbar").innerHTML = data;
-        
-        // This part makes the three-line menu work on this page too!
-        setTimeout(() => {
-            const hamburger = document.querySelector('.hamburger');
-            const navMenu = document.querySelector('.nav');
-            if (hamburger && navMenu) {
-                hamburger.onclick = () => navMenu.classList.toggle('show');
-            }
-        }, 100);
-      });
-</script>
 </body>
 </html>
