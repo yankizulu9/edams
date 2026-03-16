@@ -7,33 +7,33 @@
         </button>
 
         <div class="hamburger" style="cursor: pointer; display: flex; flex-direction: column; gap: 4px; padding: 5px;">
-            <div style="width: 25px; height: 3px; background: #333;"></div>
-            <div style="width: 25px; height: 3px; background: #333;"></div>
-            <div style="width: 25px; height: 3px; background: #333;"></div>
+            <div style="width: 25px; height: 3px; background: #333; transition: 0.3s;"></div>
+            <div style="width: 25px; height: 3px; background: #333; transition: 0.3s;"></div>
+            <div style="width: 25px; height: 3px; background: #333; transition: 0.3s;"></div>
         </div>
     </div>
 </div>
 
-<div class="nav" style="display: none; flex-direction: column; background: #fff; width: 200px; position: absolute; right: 10px; top: 60px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 10001; border-radius: 8px; border: 1px solid #eee;">
-    <a href="index.html" style="padding: 12px 20px; text-decoration: none; color: #333; border-bottom: 1px solid #eee; font-size: 0.9rem;">Home</a>
-    <a href="dashboard.html" style="padding: 12px 20px; text-decoration: none; color: #333; border-bottom: 1px solid #eee; font-size: 0.9rem;">Statistics</a>
-    <a href="request.html" style="padding: 12px 20px; text-decoration: none; color: #333; font-size: 0.9rem;">Request Aid</a>
+<div class="nav" style="display: none; flex-direction: column; background: #fff; width: 200px; position: absolute; right: 10px; top: 60px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 10001; border-radius: 8px; border: 1px solid #eee; overflow: hidden;">
+    <a href="index.html" style="padding: 15px 20px; text-decoration: none; color: #333; border-bottom: 1px solid #eee; font-size: 0.9rem; display: block;">Home</a>
+    <a href="dashboard.html" style="padding: 15px 20px; text-decoration: none; color: #333; border-bottom: 1px solid #eee; font-size: 0.9rem; display: block;">Statistics</a>
+    <a href="request.html" style="padding: 15px 20px; text-decoration: none; color: #333; font-size: 0.9rem; display: block;">Request Aid</a>
 </div>
 
 <style>
-    /* Default state */
-    .nav {
-        display: none;
-    }
-
-    /* Shown state */
+    /* This rule is triggered by the JavaScript toggle */
     .nav.show {
         display: flex !important;
     }
 
-    /* Hover effect for links */
+    /* Simple hover effect for the menu links */
     .nav a:hover {
         background-color: #f9f9f9;
         color: #e74c3c !important;
     }
+
+    /* Optional: Simple animation for the hamburger to show it's active */
+    .hamburger.active div:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.active div:nth-child(2) { opacity: 0; }
+    .hamburger.active div:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 </style>

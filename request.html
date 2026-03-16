@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDAMS - Request Aid</title>
+    <style>
+        /* Modern, clean font and background */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f4f7f6; color: #333; }
+        
+        /* Space for the fetched navbar so content isn't hidden behind it */
+        #navbar { min-height: 70px; } 
+
+        .container { max-width: 600px; margin: 40px auto; padding: 20px; }
+        
+        .form-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        h2 { color: #e74c3c; margin-top: 0; border-left: 5px solid #e74c3c; padding-left: 15px; }
+        p { color: #666; font-size: 0.9rem; margin-bottom: 25px; }
+
+        .input-group { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 0.9rem; color: #555; }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1.5px solid #eee;
+            border-radius: 8px;
+            box-sizing: border-box; /* Prevents input from stretching past the card */
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #e74c3c;
+        }
+
+        textarea { height: 120px; resize: vertical; }
+
+        .submit-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.2);
+        }
+
+        .submit-btn:hover { 
+            background: #c0392b; 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(231, 76, 60, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="navbar"></div>
+
+    <div class="container">
+        <div class="form-card">
+            <h2>Request Urgent Aid</h2>
+            <p>Please provide your details below. We prioritize cases based on medical urgency and food security.</p>
+            
+            <form id="aidForm">
+                <div class="input-group">
+                    <label>Your Full Name</label>
+                    <input type="text" placeholder="e.g. Abdullah Ahmed" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Current Location (Gaza District)</label>
+                    <select required>
+                        <option value="">-- Select Your District --</option>
+                        <option value="north">North Gaza</option>
+                        <option value="gaza-city">Gaza City</option>
+                        <option value="deir-al-balah">Deir al-Balah</option>
+                        <option value="khan-yunis">Khan Yunis</option>
+                        <option value="rafah">Rafah</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Type of Assistance Required</label>
+                    <select required>
+                        <option value="medical">Medical Assistance</option>
+                        <option value="food">Emergency Food & Water</option>
+                        <option value="shelter">Shelter Support</option>
+                        <option value="protection">Protection Services</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Briefly describe your situation</label>
+                    <textarea placeholder="Please tell us about the urgency..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">SUBMIT URGENT REQUEST</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        fetch("Navbar.html")
+          .then(res => res.text())
+          .then(data => {
+            document.getElementById("navbar").innerHTML = data;
+            
+            // This ensures the hamburger menu works on this page too!
+            setTimeout(() => {
+                const hamburger = document.querySelector('.hamburger');
+                const navMenu = document.querySelector('.nav');
+                if (hamburger && navMenu) {
+                    hamburger.onclick = () => {
+                        navMenu.classList.toggle('show');
+                        hamburger.classList.toggle('active'); // Animates the lines to X
+                    };
+                }
+            }, 100);
+          });
+
+        // Small simulation of form submission
+        document.getElementById('aidForm').onsubmit = (e) => {
+            e.preventDefault();
+            alert("Thank you. Your request has been logged in the EDAMS system. We will contact you soon.");
+        };
+    </script>
+    <script>
+    fetch("Navbar.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("navbar").innerHTML = data;
+        
+        // This part makes the three-line menu work on this page too!
+        setTimeout(() => {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav');
+            if (hamburger && navMenu) {
+                hamburger.onclick = () => navMenu.classList.toggle('show');
+            }
+        }, 100);
+      });
+</script>
+</body>
+</html>
