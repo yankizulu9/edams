@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDAMS - Statistics Dashboard</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #f4f7f6; color: #333; }
+        #navbar { min-height: 70px; }
+
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        
+        /* THE MAP CONTAINER STYLE WE JUST DISCUSSED */
+        .map-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            max-width: 600px; 
+            margin: 0 auto;
+        }
+
+        .gaza-map { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+
+        .district-block {
+            padding: 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+
+        /* Color Levels */
+        .extreme { background-color: #780000; animation: pulse-red 2s infinite; }
+        .high { background-color: #c1121f; }
+        .medium { background-color: #f17105; }
+        .low { background-color: #ffb703; }
+
+        .stats { font-size: 0.85rem; background: rgba(0,0,0,0.2); padding: 5px 12px; border-radius: 20px; }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(120, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(120, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(120, 0, 0, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="navbar"></div>
+
+    <div class="container">
+        <div class="map-container">
+            <h3>Live Regional Priority Map</h3>
+            <p>Real-time intensity based on incoming aid requests.</p>
+            
+            <div class="gaza-map">
+                <div class="district-block" data-district="North Gaza">
+                    <span>North Gaza</span>
+                    <div class="stats">0 Requests</div>
+                </div>
+                <div class="district-block" data-district="Gaza City">
+                    <span>Gaza City</span>
+                    <div class="stats">0 Requests</div>
+                </div>
+                <div class="district-block" data-district="Deir al-Balah">
+                    <span>Deir al-Balah</span>
+                    <div class="stats">0 Requests</div>
+                </div>
+                <div class="district-block" data-district="Khan Yunis">
+                    <span>Khan Yunis</span>
+                    <div class="stats">0 Requests</div>
+                </div>
+                <div class="district-block" data-district="Rafah">
+                    <span>Rafah</span>
+                    <div class="stats">0 Requests</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+       // 1. Load Navbar AND activate the hamburger menu logic
+fetch("Navbar.html")
+    .then(res => res.text())
+    .then(data => {
+        document.getElementById("navbar").innerHTML = data;
+
+        // NEW: This part 'wakes up' the hamburger menu after it's loaded
+        setTimeout(() => {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav'); // or '.nav-links' depending on your Navbar.html
+            
+            if (hamburger && navMenu) {
+                hamburger.onclick = () => {
+                    navMenu.classList.toggle('show');
+                };
+            }
+        }, 100); // Wait a tiny bit for the HTML to actually land on the page
+    });
+
+        // 2. Data & Logic
+        const districtData = {
+            "North Gaza": 842,
+            "Gaza City": 1500,
+            "Deir al-Balah": 1204,
+            "Khan Yunis": 215,
+            "Rafah": 890
+        };
+
+        function updateMapStats() {
+            const blocks = document.querySelectorAll('.district-block');
+            blocks.forEach(block => {
+                const name = block.getAttribute('data-district');
+                const count = districtData[name];
+                block.querySelector('.stats').innerText = count.toLocaleString() + " Requests";
+
+                if (count >= 1000) block.classList.add('extreme');
+                else if (count >= 700) block.classList.add('high');
+                else if (count >= 300) block.classList.add('medium');
+                else block.classList.add('low');
+            });
+        }
+
+        window.onload = updateMapStats;
+    </script>
+</body>
+</html>
